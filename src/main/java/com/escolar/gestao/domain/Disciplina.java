@@ -1,4 +1,8 @@
 package com.escolar.gestao.domain;
 
-public class Disciplina {
+record Disciplina(
+        String nome,
+        int cargaHoraria
+) {
+
 }

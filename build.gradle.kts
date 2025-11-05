@@ -2,6 +2,7 @@ plugins {
 	java
 	id("org.springframework.boot") version "3.5.7"
 	id("io.spring.dependency-management") version "1.1.7"
+	id("io.github.redgreencoding.plantuml") version "0.3.0"
 }
 
 group = "com.escolar"
@@ -33,4 +34,21 @@ dependencies {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+}
+
+plantuml{
+	options{
+		outputDir = project.file("docs/diagramas/images")
+		format = "png"
+	}
+	diagrams{
+		project.fileTree("docs/diagramas")
+			.files
+			.filter { it.extension == "puml" }
+			.forEach{ file ->
+				create(file.nameWithoutExtension){
+					sourceFile = project.file(file.path)
+				}
+			}
+	}
 }

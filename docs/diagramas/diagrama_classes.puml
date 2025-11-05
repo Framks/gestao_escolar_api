@@ -1,0 +1,65 @@
+@startuml
+class Usuario {
+  +id : Long
+  +email : String
+  +senha : String
+  +nomeCompleto : String
+  +cpf : String
+  +dataNascimento : LocalDate
+  +tipoUsuario : Enum {ADMIN, PROFESSOR, ALUNO}
+}
+
+class Administrador {
+  -cargo : String
+  -permissoes : List<String>
+}
+
+class Professor {
+  +matricula : Long
+}
+
+class Aluno {
+  +matricula : Long
+}
+
+class Disciplina {
+  +id : Long
+  +nome : String
+  +codigo : String
+  +descricao : String
+}
+
+class Turma {
+  +id : Long
+  +nome : String
+  +codigo : String
+  +disciplina : Disciplina
+  +semestre : Integer
+}
+
+class Matricula {
+  +id : Long
+  +dataMatricula : LocalDate
+  +status : Enum {ATIVA, TRANCADA, CONCLUIDA}
+}
+
+' =====================
+' Heranças
+' =====================
+
+Usuario <|-- Administrador
+Usuario <|-- Professor
+Usuario <|-- Aluno
+
+' =====================
+' Relacionamentos
+' =====================
+
+Disciplina "1" -- "0..*" Turma : oferece >
+Turma "1" -- "1..*" Matricula : possui >
+
+Aluno "1" -- "0..*" Matricula : realiza >
+Professor "1" -- "0..*" Turma : ensina >
+Administrador "1" -- "0..*" Turma : gerencia >
+
+@enduml
