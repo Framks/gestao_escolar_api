@@ -25,16 +25,19 @@ class Aluno {
 class Disciplina {
   +id : Long
   +nome : String
+  +cargaHoraria : int
   +codigo : String
   +descricao : String
 }
 
 class Turma {
   +id : Long
-  +nome : String
+  +professor : Professor
   +codigo : String
   +disciplina : Disciplina
-  +semestre : Integer
+  +semestre : String
+  +alunos: List<Aluno>
+  +capacidadeMaxima : int
 }
 
 class Matricula {

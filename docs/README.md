@@ -6,3 +6,7 @@ Esta pasta contém diversos tipos de documentação relacionada ao projeto, incl
 
 1. [**Diagrama de Arquitetura**](https://github.com/Framks/gestao_escolar_api/blob/master/docs/diagramas/README.md): 
    - Visão geral da arquitetura do sistema, incluindo componentes principais, suas interações e fluxos de dados.
+
+## Requests para a API
+
+na pasta `docs/postman` você encontrará uma coleção de requests para a API, que podem ser importadas diretamente no Postman para facilitar os testes e a exploração dos endpoints disponíveis.
