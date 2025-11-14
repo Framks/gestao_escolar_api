@@ -4,7 +4,7 @@ import jakarta.persistence.Entity;
 
 @Entity
 public class Professor extends Usuario {
-    public String Matricula;
+    public String matricula;
 
     public Professor() {
         super();
@@ -25,6 +25,6 @@ public class Professor extends Usuario {
                 dataNascimento,
                 com.escolar.gestao.enums.UserRole.PROFESSOR
         );
-        this.Matricula = "PRO_" + java.util.UUID.randomUUID().toString().toUpperCase();
+        this.matricula = "PRO_" + java.util.UUID.randomUUID().toString().toUpperCase();
     }
 }

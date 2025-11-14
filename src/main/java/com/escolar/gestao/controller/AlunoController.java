@@ -2,79 +2,90 @@ package com.escolar.gestao.controller;
 
 import com.escolar.gestao.controller.request.AlunoPutRequest;
 import com.escolar.gestao.controller.request.AlunoRequest;
+import com.escolar.gestao.controller.response.AlunoResponse;
 import com.escolar.gestao.domain.Aluno;
+import com.escolar.gestao.enums.UserRole;
 import com.escolar.gestao.mapper.AlunoMapper;
 import com.escolar.gestao.repository.AlunoRepository;
 import jakarta.validation.Valid;
+import java.net.URI;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/alunos")
+@RequestMapping("/alunos")
 public class AlunoController {
 
-    private final AlunoRepository alunoRepository;
+    private final AlunoRepository repository;
 
-    public AlunoController(AlunoRepository alunoRepository) {
-        this.alunoRepository = alunoRepository;
-    }
-
-    @GetMapping
-    public List<Aluno> list() {
-        return alunoRepository.findAll();
-    }
-
-    @GetMapping("/{matricula}")
-    public ResponseEntity<Aluno> getById(@PathVariable String matricula) {
-        return alunoRepository.findByMatricula(matricula)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public AlunoController(AlunoRepository repository) {
+        this.repository = repository;
     }
 
     @PostMapping
-    public Aluno create(
-            @Valid
-            @RequestBody
-            AlunoRequest aluno
-    ) {
-        return alunoRepository.save(AlunoMapper.toEntity(aluno));
+    public ResponseEntity<AlunoResponse> create(@RequestBody @Valid AlunoRequest dto) {
+
+        Aluno aluno = new Aluno(
+                dto.nome(),
+                dto.email(),
+                dto.senha(),
+                dto.cpf(),
+                dto.dataNascimento()
+        );
+
+        aluno.role = UserRole.ALUNO;
+
+        repository.save(aluno);
+
+        return ResponseEntity
+                .created(URI.create("/alunos/" + aluno.id))
+                .body(new AlunoResponse(aluno));
     }
 
-    @PutMapping("/{matricula}")
-    public ResponseEntity<Aluno> update(
-            @PathVariable
-            String matricula,
+    @GetMapping
+    public ResponseEntity<List<AlunoResponse>> findAll() {
+        List<AlunoResponse> list = repository.findAll()
+                .stream()
+                .map(AlunoResponse::new)
+                .toList();
 
-            @RequestBody
-            @Valid
-            AlunoPutRequest aluno
-    ) {
-        return alunoRepository.findByMatricula(matricula)
-                .map(existing -> {
-                    existing.nome = aluno.nome;
-                    existing.email = aluno.email;
-                    existing.dataNascimento = aluno.dataNascimento;
-                    existing.senha = aluno.senha;
+        return ResponseEntity.ok(list);
+    }
 
-                    Aluno saved = alunoRepository.save(existing);
-                    return ResponseEntity.ok(saved);
-                })
+    @GetMapping("/{id}")
+    public ResponseEntity<AlunoResponse> findById(@PathVariable Integer id) {
+        return repository.findById(id)
+                .map(a -> ResponseEntity.ok(new AlunoResponse(a)))
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping("/{matricula}")
-    public ResponseEntity<Void> delete(
-            @PathVariable
-            String matricula
+    @PutMapping("/{id}")
+    public ResponseEntity<AlunoResponse> update(
+            @PathVariable Integer id,
+            @RequestBody @Valid AlunoRequest dto
     ) {
-        return alunoRepository.findByMatricula(matricula)
-                .map(existing -> {
-                    existing.ativo = false;
-                    alunoRepository.save(existing);
-                    return ResponseEntity.noContent().<Void>build();
-                })
-                .orElse(ResponseEntity.notFound().build());
+        return repository.findById(id).map(existing -> {
+
+            existing.nome = dto.nome();
+            existing.email = dto.email();
+            existing.senha = dto.senha();
+            existing.cpf = dto.cpf();
+            existing.dataNascimento = dto.dataNascimento();
+
+            repository.save(existing);
+
+            return ResponseEntity.ok(new AlunoResponse(existing));
+
+        }).orElse(ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity delete(@PathVariable Integer id) {
+        return repository.findById(id).map(aluno -> {
+            repository.delete(aluno);
+            return ResponseEntity.noContent().build();
+        }).orElse(ResponseEntity.notFound().build());
     }
 }

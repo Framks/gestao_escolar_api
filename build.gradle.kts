@@ -28,7 +28,7 @@ dependencies {
 	runtimeOnly("com.h2database:h2")
 	runtimeOnly("org.postgresql:postgresql")
 
-	runtimeOnly("io.micrometer:micrometer-registry-otlp")
+	//runtimeOnly("io.micrometer:micrometer-registry-otlp")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }

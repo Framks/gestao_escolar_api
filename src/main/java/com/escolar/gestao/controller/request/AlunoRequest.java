@@ -5,13 +5,17 @@ import com.escolar.gestao.constraint.Email;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalDateTime;
 
-public class AlunoRequest {
-    public String nome;
+public record AlunoRequest (
+    String nome,
+
     @Email()
-    public String email;
-    public String senha;
+    String email,
+
+    String senha,
+
     @Cpf()
-    public String cpf;
+    String cpf,
+
     @JsonProperty("data_nascimento")
-    public LocalDateTime dataNascimento;
-}
+    LocalDateTime dataNascimento
+){ }
