@@ -15,3 +15,38 @@ spring:
     console:
       enabled: true
       path: /h2-console
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+otel:
+  resource:
+    attributes:
+      service.name: gestao-api
+      service.namespace: backend
+      service.version: "1.0.0"
+
+  exporter:
+    otlp:
+      protocol: http/protobuf
+
+      traces:
+        endpoint: http://localhost:4318/v1/traces
+
+      metrics:
+        endpoint: http://localhost:4318/v1/metrics
+
+      logs:
+        endpoint: http://localhost:4318/v1/logs
+
+  traces:
+    sampler:
+      probability: 1.0
+
+logging:
+  level:
+    root: INFO
+    com.gestao: DEBUG

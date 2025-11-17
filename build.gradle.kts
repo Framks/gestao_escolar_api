@@ -20,7 +20,6 @@ repositories {
 }
 
 dependencies {
-	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
@@ -28,7 +27,10 @@ dependencies {
 	runtimeOnly("com.h2database:h2")
 	runtimeOnly("org.postgresql:postgresql")
 
-	//runtimeOnly("io.micrometer:micrometer-registry-otlp")
+	implementation("org.springframework.boot:spring-boot-starter-actuator")
+	implementation("io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter:2.8.0")
+
+	// teste
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }

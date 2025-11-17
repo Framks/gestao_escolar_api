@@ -6,11 +6,11 @@ import com.escolar.gestao.domain.Aluno;
 public class AlunoMapper {
     public static Aluno toEntity(AlunoRequest request) {
         return new Aluno(
-                request.nome,
-                request.email,
-                request.senha,
-                request.cpf,
-                request.dataNascimento
+                request.nome(),
+                request.email(),
+                request.senha(),
+                request.cpf(),
+                request.dataNascimento()
         );
     }
 }
