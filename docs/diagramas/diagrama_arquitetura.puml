@@ -1,0 +1,56 @@
+@startuml
+!theme plain
+title Arquitetura de Software - gerenciamento escolar
+
+actor "admin/tech/professor" as user
+
+' Camadas do backend
+package "Backend (Java)" as backend {
+    rectangle "Apresentação\n(Controllers)" as controllers
+    rectangle "Aplicação\n(Use Cases)" as usecases
+    rectangle "Domínio\n(Entidades)" as domain
+    rectangle "Infraestrutura\n(DB, Telemetria, Repositórios)" as infra
+}
+
+' Frontend
+node "Frontend (React)" as front {
+    [Interface Web]
+}
+
+' Banco de dados
+database "PostgreSQL" as db
+
+' Observabilidade
+node "Collector" as collector {
+    [OpenTelemetry Collector]
+}
+
+node "Mimir\n(Métricas)" as mimir
+node "Tempo\n(Traces)" as tempo
+node "Loki\n(Logs)" as loki
+node "Grafana" as grafana {
+    [Dashboards]
+}
+
+' Fluxos principais
+user --> front : Interage via navegador
+front --> controllers : HTTP/HTTPS requests
+controllers --> usecases : Chama casos de uso
+usecases --> domain : Manipula entidades
+usecases --> infra : Acesso a repositórios e serviços
+infra --> db : CRUD
+infra --> collector : Envia logs, métricas e traces
+collector --> mimir
+collector --> tempo
+collector --> loki
+grafana --> mimir
+grafana --> tempo
+grafana --> loki
+user --> grafana : Visualiza observabilidade
+
+' Dependências internas da Clean Architecture
+controllers -down-> usecases
+usecases -down-> domain
+usecases -down-> infra
+
+@enduml
