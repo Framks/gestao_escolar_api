@@ -1,13 +1,26 @@
-package com.escolar.gestao.domain;
+package com.escolar.gestao.infrastructure.persistence.entity;
 
 import com.escolar.gestao.enums.UserRole;
+import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import java.time.LocalDateTime;
 
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name="usuario_nome")
 public abstract class Usuario {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public Integer id;
 
     public String nome;
 
@@ -15,14 +28,17 @@ public abstract class Usuario {
 
     public String cpf;
 
+    @Column(name = "data_nascimento")
     public LocalDateTime dataNascimento;
 
+    @Enumerated(EnumType.STRING)
     public UserRole role;
 
     public String email;
 
     public Boolean ativo = true;
 
+    @Column(name = "data_criacao")
     public LocalDateTime dataCriacao = LocalDateTime.now();
 
     public Usuario() {}

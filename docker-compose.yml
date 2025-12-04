@@ -33,6 +33,7 @@ services:
 
   grafana:
     image: grafana/grafana:11.4.0
+    container_name: grafana
     ports:
       - 3000:3000
     volumes:
@@ -45,6 +46,7 @@ services:
 
   otel-collector:
     privileged: true
+    container_name: otel-collector
     user: 0:0
     image: otel/opentelemetry-collector-contrib:0.118.0
     volumes:
@@ -61,6 +63,7 @@ services:
 
   mimir:
     image: grafana/mimir:2.15.0
+    container_name: mimir
     command: [ "-config.file=/etc/mimir.yaml" ]
     volumes:
       - ./infra/config/grafana/mimir.yaml:/etc/mimir.yaml
@@ -69,17 +72,20 @@ services:
     networks:
       - observability
 
-#  application:
-#    image: gestao-api:latest
-#    build:
-#      context: .
-#      dockerfile: Dockerfile
-#    ports:
-#      - "8080:8080"
-#    depends_on:
-#      - otel-collector
-#    networks:
-#      - observability
+  application:
+    image: gestao-api:${VERSION}
+    container_name: application
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+    ports:
+      - "8080:8080"
+    depends_on:
+      - otel-collector
+    networks:
+      - observability
 
 networks:
   observability:
