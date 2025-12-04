@@ -1,17 +1,19 @@
-package com.escolar.gestao.domain;
+package com.escolar.gestao.infrastructure.persistence.entity;
 
+import jakarta.persistence.Entity;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class Admin extends  Usuario {
+@Entity
+public class AdminEntity extends Usuario {
     public String cargo;
     public List<String> permissoes;
 
-    public Admin() {
+    public AdminEntity() {
         super();
     }
 
-    public Admin(
+    public AdminEntity(
             String nome,
             String email,
             String senha,

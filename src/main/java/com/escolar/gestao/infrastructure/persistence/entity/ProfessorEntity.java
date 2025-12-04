@@ -1,13 +1,17 @@
-package com.escolar.gestao.domain;
+package com.escolar.gestao.infrastructure.persistence.entity;
 
-public class Professor extends Usuario {
+
+import jakarta.persistence.Entity;
+
+@Entity
+public class ProfessorEntity extends Usuario {
     public String matricula;
 
-    public Professor() {
+    public ProfessorEntity() {
         super();
     }
 
-    public Professor(
+    public ProfessorEntity(
             String nome,
             String email,
             String senha,
@@ -25,3 +29,4 @@ public class Professor extends Usuario {
         this.matricula = "PRO_" + java.util.UUID.randomUUID().toString().toUpperCase();
     }
 }
+
