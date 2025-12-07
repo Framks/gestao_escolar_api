@@ -9,4 +9,5 @@ public interface AlunoRepository {
     List<Aluno> findAll();
     Aluno findByEmail(String email);
     Aluno findByMatricula(String matricula);
+    void deleteByMatricula(String matricula);
 }

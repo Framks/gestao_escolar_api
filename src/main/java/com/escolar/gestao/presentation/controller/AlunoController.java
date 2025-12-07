@@ -2,6 +2,7 @@ package com.escolar.gestao.presentation.controller;
 
 import com.escolar.gestao.application.mapper.AlunoMapper;
 import com.escolar.gestao.application.usecases.useCasesAluno.UseCaseCreateAluno;
+import com.escolar.gestao.application.usecases.useCasesAluno.UseCaseDeleteAluno;
 import com.escolar.gestao.application.usecases.useCasesAluno.UseCaseGetAluno;
 import com.escolar.gestao.application.usecases.useCasesAluno.UseCaseUpdateAluno;
 import com.escolar.gestao.presentation.controller.request.Aluno.AlunoRequest;
@@ -20,15 +21,18 @@ public class AlunoController {
     private final UseCaseCreateAluno createAluno;
     private final UseCaseGetAluno getAluno;
     private final UseCaseUpdateAluno updateAluno;
+    private final UseCaseDeleteAluno deleteAluno;
 
     public AlunoController(
             UseCaseCreateAluno createAluno,
             UseCaseGetAluno getAluno,
-            UseCaseUpdateAluno updateAluno
+            UseCaseUpdateAluno updateAluno,
+            UseCaseDeleteAluno deleteAluno
     ) {
         this.createAluno = createAluno;
         this.getAluno = getAluno;
         this.updateAluno = updateAluno;
+        this.deleteAluno = deleteAluno;
     }
 
     @PostMapping
@@ -69,9 +73,9 @@ public class AlunoController {
         return null;
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity delete(@PathVariable Integer id) {
-        // ToDo Implementar
-        return null;
+    @DeleteMapping("/{matricula}")
+    public ResponseEntity delete(@PathVariable String matricula) {
+        deleteAluno.delete(matricula);
+        return ResponseEntity.noContent().build();
     }
 }

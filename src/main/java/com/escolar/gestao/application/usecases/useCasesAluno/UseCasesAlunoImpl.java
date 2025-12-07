@@ -5,7 +5,7 @@ import com.escolar.gestao.domain.repository.AlunoRepository;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UseCasesAlunoImpl implements UseCaseCreateAluno,  UseCaseUpdateAluno, UseCaseGetAluno{
+public class UseCasesAlunoImpl implements UseCaseCreateAluno,  UseCaseUpdateAluno, UseCaseGetAluno, UseCaseDeleteAluno{
 
     private final AlunoRepository repository;
 
@@ -26,5 +26,10 @@ public class UseCasesAlunoImpl implements UseCaseCreateAluno,  UseCaseUpdateAlun
     @Override
     public Aluno getAluno(String Matricula) {
         return repository.findByMatricula(Matricula);
+    }
+
+    @Override
+    public void delete(String Matricula) {
+        repository.deleteByMatricula(Matricula);
     }
 }

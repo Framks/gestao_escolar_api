@@ -49,5 +49,10 @@ public class AlunoRepositoryImpl implements AlunoRepository {
                         )
         );
     }
+
+    @Override
+    public void deleteByMatricula(String matricula) {
+        jpa.deleteByMatricula(matricula);
+    }
 }
 

@@ -14,4 +14,6 @@ public interface AlunoRepositoryJpa extends JpaRepository<AlunoEntity, Integer> 
     List<AlunoEntity> findAllByMatriculaIn(Iterable<String> matriculas);
 
     boolean existsByEmail(String email);
+
+    void deleteByMatricula(String matricula);
 }
