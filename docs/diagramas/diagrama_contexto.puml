@@ -1,22 +1,32 @@
 @startuml
-!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
 
-title Sistema de Gestão Escolar - Diagrama de Contexto
+title Gestão Escolar – Diagrama de Contexto (C1) com Módulo Financeiro
 
-Person(admin, "Administrador", "Gerencia cadastros de alunos, professores, turmas e configurações gerais do sistema.")
-Person(prof, "Professor", "Lança notas, frequência e publica tarefas para os alunos.")
-Person(aluno, "Aluno", "Consulta notas, frequência, turmas e envia tarefas pelo sistema.")
+Person(admin, "Administrador",  "Gerencia cadastros, turmas e configurações do sistema.")
+Person(prof, "Professor",  "Lança notas, frequência e tarefas.")
+Person(aluno, "Aluno",  "Consulta notas, tarefas, turmas e envia atividades.")
 
-System(api, "Gestão Escolar", "Sistema de gerenciamento escolar que permite: - Administradores: gerenciar alunos, professores e turmas - Professores: lançar notas, frequência e tarefas - Alunos: ver notas, turmas e enviar tarefas")
+Person(resp_fin, "Responsável Financeiro", "Acompanha cobranças, boletos, pagamentos e mensalidades. (Opcional)")
 
-System_Ext(front, "Frontend", "Aplicação web ou mobile acessada por alunos, professores e administradores.")
-System_Ext(db, "Banco de Dados", "Armazena usuários, notas, turmas, frequência e tarefas. Ex.: PostgreSQL.")
+System(sistema, "Gestão Escolar",   "Sistema de gerenciamento escolar que administra alunos, professores,\n turmas, notas, tarefas, frequência e também realiza cobranças/mensalidades.")
 
-Rel(admin, front, "Acessa", "HTTPS")
-Rel(prof, front, "Acessa", "HTTPS")
-Rel(aluno, front, "Acessa", "HTTPS")
+System_Ext(frontend, "Frontend", "Interface web/mobile utilizada pelos usuários.")
+System_Ext(autenticacao, "Sistema de Autenticação",  "Ex: Keycloak, OAuth2 (opcional)")
+System_Ext(pagamentos, "Plataforma de Pagamentos",  "Serviço terceiro que processa transações, boletos e cobranças.\n Ex: Stripe, Mercado Pago, Pagar.me, PayPal.")
 
-Rel(front, api, "Chama APIs", "HTTPS / JSON")
-Rel(api, db, "Lê / grava dados", "JPA / SQL")
+
+' --- Relações dos usuários com o frontend ---
+Rel(admin, frontend, "Acessa")
+Rel(prof, frontend, "Acessa")
+Rel(aluno, frontend, "Acessa")
+Rel(resp_fin, frontend, "Acessa módulo financeiro", "HTTPS")
+
+' --- Relações do frontend com o sistema ---
+Rel(frontend, sistema, "Interage com")
+
+' --- Serviços externos usados pelo sistema ---
+Rel(sistema, autenticacao, "Valida credenciais", "HTTPS")
+Rel(sistema, pagamentos, "Cria cobranças / processa pagamentos", "HTTPS / API")
 
 @enduml
