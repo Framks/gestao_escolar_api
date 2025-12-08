@@ -1,0 +1,22 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+title Sistema de Gestão Escolar - Diagrama de Contexto
+
+Person(admin, "Administrador", "Gerencia cadastros de alunos, professores, turmas e configurações gerais do sistema.")
+Person(prof, "Professor", "Lança notas, frequência e publica tarefas para os alunos.")
+Person(aluno, "Aluno", "Consulta notas, frequência, turmas e envia tarefas pelo sistema.")
+
+System(api, "Gestão Escolar", "Sistema de gerenciamento escolar que permite: - Administradores: gerenciar alunos, professores e turmas - Professores: lançar notas, frequência e tarefas - Alunos: ver notas, turmas e enviar tarefas")
+
+System_Ext(front, "Frontend", "Aplicação web ou mobile acessada por alunos, professores e administradores.")
+System_Ext(db, "Banco de Dados", "Armazena usuários, notas, turmas, frequência e tarefas. Ex.: PostgreSQL.")
+
+Rel(admin, front, "Acessa", "HTTPS")
+Rel(prof, front, "Acessa", "HTTPS")
+Rel(aluno, front, "Acessa", "HTTPS")
+
+Rel(front, api, "Chama APIs", "HTTPS / JSON")
+Rel(api, db, "Lê / grava dados", "JPA / SQL")
+
+@enduml

@@ -1,0 +1,52 @@
+@startuml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+title Sistema de Gestão Escolar - Container Diagram + Observabilidade Completa
+
+Person(admin, "Administrador")
+Person(prof, "Professor")
+Person(aluno, "Aluno")
+
+System_Boundary(sis, "Gestão Escolar") {
+
+    Container(frontend, "Frontend", "React / Flutter", "Interface usada por alunos, professores e admins")
+
+    Container(api, "API Backend",        "Spring Boot + OpenTelemetry SDK",        "Expõe APIs REST e envia telemetria via OTLP")
+
+    ContainerDb(db, "Banco de Dados",         "PostgreSQL",        "Armazena usuários, notas, turmas, frequência e tarefas")
+}
+
+System_Boundary(obs, "Plataforma de Observabilidade") {
+
+    Container(collector, "OpenTelemetry Collector",         "OTel Collector",        "Recebe telemetria da API (traces, logs, metrics) e distribui para Mimir, Tempo e Loki")
+
+    Container(mimir, "Mimir",         "Grafana Mimir",         "Armazena e processa métricas (Prometheus-compatible)")
+
+    Container(tempo, "Tempo",         "Grafana Tempo",         "Armazena traces de forma distribuída")
+
+    Container(loki, "Loki",         "Grafana Loki",         "Armazena logs de forma escalável")
+
+    Container(grafana, "Grafana",         "Grafana",         "Interface para dashboards, métricas, logs e traces")
+}
+
+' Relações dos usuários
+Rel(admin, frontend, "Acessa", "HTTPS")
+Rel(prof, frontend, "Acessa", "HTTPS")
+Rel(aluno, frontend, "Acessa", "HTTPS")
+
+' Relações internas
+Rel(frontend, api, "Consome APIs", "HTTPS / JSON")
+Rel(api, db, "Lê / grava dados", "SQL / JPA")
+
+' Observabilidade
+Rel(api, collector, "Envia métricas, logs e traces via OTLP", "OTLP / gRPC")
+Rel(collector, mimir, "Envia métricas", "OTLP → Prometheus Remote Write")
+Rel(collector, tempo, "Envia traces", "OTLP")
+Rel(collector, loki, "Envia logs", "Loki Push API")
+
+' Grafana como ponto único de consulta
+Rel(grafana, mimir, "Consulta métricas", "PromQL")
+Rel(grafana, tempo, "Consulta traces", "Tempo API")
+Rel(grafana, loki, "Consulta logs", "LogQL")
+
+@enduml
