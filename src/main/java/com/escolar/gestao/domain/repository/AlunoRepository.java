@@ -10,4 +10,6 @@ public interface AlunoRepository {
     Aluno findByEmail(String email);
     Aluno findByMatricula(String matricula);
     void deleteByMatricula(String matricula);
+    List<Aluno> findAll(Integer page, Integer size, String sortBy);
+    Aluno update(Aluno usuario, String matricula);
 }

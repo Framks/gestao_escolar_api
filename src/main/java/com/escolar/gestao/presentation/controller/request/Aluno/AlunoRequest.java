@@ -18,4 +18,6 @@ public record AlunoRequest (
 
     @JsonProperty("data_nascimento")
     LocalDateTime dataNascimento
-){ }
+){
+
+}
