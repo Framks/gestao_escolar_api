@@ -1,0 +1,20 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+Container(api, "Gestão Escolar API", "Java + Spring Boot")
+
+Component(controllerAluno, "AlunoController", "Controller REST", "Recebe requisições HTTP para alunos")
+Component(usecaseAluno, "AlunoUseCases", "Service", "Orquestra lógica de negócio para alunos (criação, atualização, consulta)")
+Component(repoInterfaceAluno, "AlunoRepository", "Interface", "Contrato para persistência de Aluno")
+Component(domainAluno, "Aluno (Entidade de Domínio)", "Classe de domínio", "Regra de negócio e validação de aluno")
+Component(repoImplAluno, "AlunoRepositoryJpa", "Adapter JPA", "Implementação da interface de repositório usando Spring Data / JPA")
+Component(entityAluno, "AlunoJpaEntity", "JPA Entity", "Mapeamento da entidade Aluno para tabela no BD")
+
+Rel(controllerAluno, usecaseAluno, "Chama")
+Rel(usecaseAluno, domainAluno, "Usa para lógica de domínio")
+Rel(usecaseAluno, repoInterfaceAluno, "Persiste / Recupera Aluno")
+Rel(repoInterfaceAluno, repoImplAluno, "Implementado por")
+Rel(repoImplAluno, entityAluno, "Mapeia para JPA Entity")
+Rel(repoImplAluno, db, "Salva / Consulta via JPA")
+
+@enduml
