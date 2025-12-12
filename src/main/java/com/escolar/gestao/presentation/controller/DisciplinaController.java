@@ -23,6 +23,7 @@ public class DisciplinaController {
 
     @GetMapping
     public List<Disciplina> list() {
+        // ToDo implementar
         return null;
     }
 
@@ -31,6 +32,7 @@ public class DisciplinaController {
             @PathVariable
             String code
     ) {
+        // ToDo implementar
         return null;
     }
 
@@ -39,6 +41,7 @@ public class DisciplinaController {
             @RequestBody
             Disciplina disciplina
     ) {
+        // ToDo implementar
         return null;
     }
 
@@ -50,6 +53,7 @@ public class DisciplinaController {
             @RequestBody
             Disciplina disciplina
     ) {
+        // ToDo implementar
         return null;
     }
 
@@ -58,6 +62,7 @@ public class DisciplinaController {
             @PathVariable
             Long id
     ) {
+        // ToDo implementar
         return null;
     }
 }

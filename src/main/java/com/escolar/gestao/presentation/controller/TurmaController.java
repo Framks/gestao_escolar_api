@@ -42,16 +42,19 @@ public class TurmaController {
 
     @PostMapping
     public ResponseEntity<TurmaResponse> create(@RequestBody @Valid TurmaRequest dto) {
+        // ToDo implementar
         return null;
     }
 
     @GetMapping
     public ResponseEntity<List<TurmaResponse>> findAll() {
+        // ToDo implementar
         return null;
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<TurmaResponse> findById(@PathVariable Long id) {
+        // ToDo implementar
         return null;
     }
 
@@ -60,11 +63,13 @@ public class TurmaController {
             @PathVariable Long id,
             @RequestBody @Valid TurmaRequest dto
     ) {
+        // ToDo implementar
         return null;
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity delete(@PathVariable Long id) {
+        // ToDo implementar
         return null;
     }
 }

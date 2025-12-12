@@ -10,8 +10,6 @@ import com.escolar.gestao.presentation.controller.request.Aluno.AlunoRequest;
 import com.escolar.gestao.presentation.controller.response.Aluno.AlunoPageableResponse;
 import com.escolar.gestao.presentation.controller.response.Aluno.AlunoResponse;
 import jakarta.validation.Valid;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,7 +32,8 @@ public class AlunoController {
             UseCaseGetAluno getAluno,
             UseCaseUpdateAluno updateAluno,
             UseCaseDeleteAluno deleteAluno,
-            UseCaseGetAluno useCaseGetAluno, UseCaseUpdateAluno useCaseUpdateAluno) {
+            UseCaseGetAluno useCaseGetAluno, UseCaseUpdateAluno useCaseUpdateAluno
+    ) {
         this.createAluno = createAluno;
         this.getAluno = getAluno;
         this.updateAluno = updateAluno;
@@ -83,12 +82,14 @@ public class AlunoController {
             @Valid
             AlunoRequest request
     ) {
-        useCaseUpdateAluno.updateUser(AlunoMapper.toDomain(request), matricula);
-        return null;
+        Aluno result = useCaseUpdateAluno.updateUser(AlunoMapper.toDomain(request), matricula);
+        return ResponseEntity.ok(AlunoMapper.toResponse(result));
     }
 
     @DeleteMapping("/{matricula}")
-    public ResponseEntity delete(@PathVariable String matricula) {
+    public ResponseEntity delete(
+            @PathVariable String matricula
+    ) {
         deleteAluno.delete(matricula);
         return ResponseEntity.noContent().build();
     }

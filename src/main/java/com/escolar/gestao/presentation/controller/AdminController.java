@@ -1,5 +1,12 @@
 package com.escolar.gestao.presentation.controller;
 
+import com.escolar.gestao.application.mapper.AdminMapper;
+import com.escolar.gestao.application.usecases.useCasesAdmin.UseCaseCreateAdmin;
+import com.escolar.gestao.application.usecases.useCasesAdmin.UseCaseDeleteAdmin;
+import com.escolar.gestao.application.usecases.useCasesAdmin.UseCaseGetAdmin;
+import com.escolar.gestao.application.usecases.useCasesAdmin.UseCaseUpdateAdmin;
+import com.escolar.gestao.constraint.Cpf;
+import com.escolar.gestao.domain.Admin;
 import com.escolar.gestao.presentation.controller.request.Admin.AdminRequest;
 import com.escolar.gestao.presentation.controller.response.Admin.AdminResponse;
 import jakarta.validation.Valid;
@@ -12,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import static com.escolar.gestao.constants.URLconstants.URL_ADMIN;
 
@@ -19,40 +27,71 @@ import static com.escolar.gestao.constants.URLconstants.URL_ADMIN;
 @RequestMapping(URL_ADMIN)
 public class AdminController {
 
-    public AdminController( ) {
+    private final UseCaseGetAdmin useCaseGetAdmin;
+    private final UseCaseCreateAdmin useCaseCreateAdmin;
+    private final UseCaseDeleteAdmin useCaseDeleteAdmin;
+    private final UseCaseUpdateAdmin useCaseUpdateAdmin;
 
+    public AdminController(
+            UseCaseCreateAdmin createAdmin,
+            UseCaseGetAdmin getAdmin,
+            UseCaseUpdateAdmin updateAdmin,
+            UseCaseDeleteAdmin deleteAdmin) {
+        this.useCaseCreateAdmin = createAdmin;
+        this.useCaseGetAdmin = getAdmin;
+        this.useCaseUpdateAdmin = updateAdmin;
+        this.useCaseDeleteAdmin = deleteAdmin;
     }
 
     @PostMapping
-    public ResponseEntity<AdminResponse> create(@RequestBody @Valid AdminRequest dto) {
-        // ToDo Implementar
-        return null;
+    public ResponseEntity<AdminResponse> create(
+            @RequestBody @Valid AdminRequest request
+    ) {
+        Admin admin = useCaseCreateAdmin.createUser(AdminMapper.toDomain(request));
+        return ResponseEntity.ok(AdminMapper.toResponse(admin));
     }
 
     @GetMapping
-    public ResponseEntity<List<AdminResponse>> findAll() {
-        // ToDo Implementar
-        return null;
-    }
+    public ResponseEntity<List<AdminResponse>> findAll(
+            @RequestParam(defaultValue = "0")
+            Integer page,
 
-    @GetMapping("/{id}")
-    public ResponseEntity<AdminResponse> findById(@PathVariable Integer id) {
-        return null;
-        // ToDo Implementar
-    }
+            @RequestParam(defaultValue = "10")
+            Integer size,
 
-    @PutMapping("/{id}")
-    public ResponseEntity<AdminResponse> update(
-            @PathVariable Integer id,
-            @RequestBody @Valid AdminRequest dto
+            @RequestParam(defaultValue = "nome")
+            String sortBy
     ) {
-        return null;
-        // ToDo Implementar
+        List<Admin> list = useCaseGetAdmin.getAdmins(page, size, sortBy);
+        List<AdminResponse> responses = list.stream().map(AdminMapper::toResponse).toList();
+        return ResponseEntity.ok(responses);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity delete(@PathVariable Integer id) {
-        return null;
-        // ToDo Implementar
+    @GetMapping("/{email}")
+    public ResponseEntity<AdminResponse> findById(
+            @PathVariable String email
+    ) {
+        Admin admin = useCaseGetAdmin.getAdmin(email);
+        return ResponseEntity.ok(AdminMapper.toResponse(admin));
+    }
+
+    @PutMapping("/{email}")
+    public ResponseEntity<AdminResponse> update(
+            @PathVariable String email,
+            @RequestBody @Valid AdminRequest request
+    ) {
+        Admin admin = useCaseUpdateAdmin.updateUser(AdminMapper.toDomain(request), email);
+        return ResponseEntity.ok(AdminMapper.toResponse(admin));
+    }
+
+    @DeleteMapping("/{cpf}")
+    public ResponseEntity delete(
+            @PathVariable
+            @Valid
+            @Cpf
+            String cpf
+    ) {
+        useCaseDeleteAdmin.delete(cpf);
+        return ResponseEntity.noContent().build();
     }
 }
