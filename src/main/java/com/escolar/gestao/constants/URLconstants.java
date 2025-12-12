@@ -9,4 +9,5 @@ public final class URLconstants{
     public static final String URL_TURMA = "/api/v1/turmas";
     public static final String URL_ADMIN = "/api/v1/admins";
     public static final String URL_PROFESSOR = "/api/v1/professores";
+    public static final String URL_AUHT = "/api/v1/auth";
 }

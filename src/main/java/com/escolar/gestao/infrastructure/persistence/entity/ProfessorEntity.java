@@ -4,7 +4,7 @@ package com.escolar.gestao.infrastructure.persistence.entity;
 import jakarta.persistence.Entity;
 
 @Entity
-public class ProfessorEntity extends Usuario {
+public class ProfessorEntity extends UsuarioEntity {
     public String matricula;
 
     public ProfessorEntity() {
