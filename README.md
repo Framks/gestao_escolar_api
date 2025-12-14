@@ -17,7 +17,7 @@ Um sistema de gerenciamento escolar desenvolvido como projeto da disciplina Arqu
 
 ### **08/12 e 09/12**
 
- - [ ] Modelo C4 → Diagramas de Contexto e Container
+ - [X] Modelo C4 → Diagramas de Contexto e Container
 
 ### **15/12 e 16/12**
 

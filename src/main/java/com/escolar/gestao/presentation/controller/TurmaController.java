@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import static com.escolar.gestao.constants.URLconstants.URL_TURMA;
 
@@ -41,34 +42,55 @@ public class TurmaController {
     }
 
     @PostMapping
-    public ResponseEntity<TurmaResponse> create(@RequestBody @Valid TurmaRequest dto) {
-        // ToDo implementar
-        return null;
-    }
-
-    @GetMapping
-    public ResponseEntity<List<TurmaResponse>> findAll() {
-        // ToDo implementar
-        return null;
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<TurmaResponse> findById(@PathVariable Long id) {
-        // ToDo implementar
-        return null;
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<TurmaResponse> update(
-            @PathVariable Long id,
-            @RequestBody @Valid TurmaRequest dto
+    public ResponseEntity<TurmaResponse> create(
+            @RequestBody
+            @Valid
+            TurmaRequest request
     ) {
         // ToDo implementar
         return null;
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity delete(@PathVariable Long id) {
+    @GetMapping
+    public ResponseEntity<List<TurmaResponse>> findAll(
+            @RequestParam(defaultValue = "0")
+            Integer page,
+            @RequestParam(defaultValue = "10")
+            Integer size,
+            @RequestParam
+            String sortBy
+    ) {
+        // ToDo implementar
+        return null;
+    }
+
+    @GetMapping("/{codigo}")
+    public ResponseEntity<TurmaResponse> findByCode(
+            @PathVariable
+            String codigo
+    ) {
+        // ToDo implementar
+        return null;
+    }
+
+    @PutMapping("/{code}")
+    public ResponseEntity<TurmaResponse> update(
+            @PathVariable
+            String code,
+
+            @RequestBody
+            @Valid
+            TurmaRequest request
+    ) {
+        // ToDo implementar
+        return null;
+    }
+
+    @DeleteMapping("/{code}")
+    public ResponseEntity delete(
+            @PathVariable
+            String code
+    ) {
         // ToDo implementar
         return null;
     }

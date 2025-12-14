@@ -21,22 +21,17 @@ import static com.escolar.gestao.constants.URLconstants.URL_ALUNO;
 public class AlunoController {
 
     private final UseCaseCreateAluno createAluno;
-    private final UseCaseGetAluno getAluno;
-    private final UseCaseUpdateAluno updateAluno;
     private final UseCaseDeleteAluno deleteAluno;
     private final UseCaseGetAluno useCaseGetAluno;
     private final UseCaseUpdateAluno useCaseUpdateAluno;
 
     public AlunoController(
             UseCaseCreateAluno createAluno,
-            UseCaseGetAluno getAluno,
-            UseCaseUpdateAluno updateAluno,
             UseCaseDeleteAluno deleteAluno,
-            UseCaseGetAluno useCaseGetAluno, UseCaseUpdateAluno useCaseUpdateAluno
+            UseCaseGetAluno useCaseGetAluno,
+            UseCaseUpdateAluno useCaseUpdateAluno
     ) {
         this.createAluno = createAluno;
-        this.getAluno = getAluno;
-        this.updateAluno = updateAluno;
         this.deleteAluno = deleteAluno;
         this.useCaseGetAluno = useCaseGetAluno;
         this.useCaseUpdateAluno = useCaseUpdateAluno;
@@ -69,7 +64,7 @@ public class AlunoController {
             @PathVariable
             String matricula
     ) {
-        AlunoResponse response = AlunoMapper.toResponse(getAluno.getAluno(matricula));
+        AlunoResponse response = AlunoMapper.toResponse(useCaseGetAluno.getAluno(matricula));
         return ResponseEntity.ok(response);
     }
 

@@ -2,7 +2,7 @@ package com.escolar.gestao.constants;
 
 public final class URLconstants{
 
-    private URLconstants(){}   // para evitar instancias
+    private URLconstants(){}
 
     public static final String URL_ALUNO = "/api/v1/alunos";
     public static final String URL_DISCIPLINA = "/api/v1/disciplinas";

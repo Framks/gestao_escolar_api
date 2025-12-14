@@ -5,4 +5,3 @@ public class AdminNotFoundException extends RuntimeException {
         super(message);
     }
 }
-

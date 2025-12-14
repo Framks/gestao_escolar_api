@@ -26,4 +26,6 @@ public class GlobalExceptionHandler {
                         "error", "administrador não encontrado", "message", exception.getMessage()
                 ));
     }
+
+    // implementar uma melhoria nos exceptions de maneira que seja preciso criar apenas um handle ( criar um "sistema" de exception)
 }
