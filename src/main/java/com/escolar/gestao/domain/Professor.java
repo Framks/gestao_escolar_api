@@ -24,4 +24,23 @@ public class Professor extends Usuario {
         );
         this.matricula = "PRO_" + java.util.UUID.randomUUID().toString().toUpperCase();
     }
+
+    public Professor(
+            String nome,
+            String email,
+            String senha,
+            String cpf,
+            java.time.LocalDateTime dataNascimento,
+            String matricula
+    ){
+        super(
+                nome,
+                email,
+                senha,
+                cpf,
+                dataNascimento,
+                com.escolar.gestao.enums.UserRole.PROFESSOR
+        );
+        this.matricula = matricula;
+    }
 }

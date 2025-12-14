@@ -12,15 +12,4 @@ public record ProfessorResponse(
         Boolean ativo,
         LocalDateTime dataCriacao
 ) {
-    public ProfessorResponse(Professor p) {
-        this(
-                p.nome,
-                p.email,
-                p.cpf,
-                p.dataNascimento,
-                p.matricula,
-                p.ativo,
-                p.dataCriacao
-        );
-    }
 }
