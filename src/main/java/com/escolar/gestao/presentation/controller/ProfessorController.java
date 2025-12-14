@@ -86,7 +86,7 @@ public class ProfessorController {
             @Valid
             ProfessorRequest request
     ) {
-        Professor result = useCaseUpdateProfessor.update(ProfessorMapper.toDomain(request));
+        Professor result = useCaseUpdateProfessor.update(ProfessorMapper.toDomain(request), matricula);
         return ResponseEntity.ok(ProfessorMapper.toResponse(result));
     }
 

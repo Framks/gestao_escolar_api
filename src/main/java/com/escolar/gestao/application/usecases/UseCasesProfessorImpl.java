@@ -22,26 +22,26 @@ public class UseCasesProfessorImpl implements UseCaseUpdateProfessor, UseCaseDel
 
     @Override
     public Professor create(Professor professor) {
-        return null;
+        return professorRepository.save(professor);
     }
 
     @Override
     public void delete(String matricula) {
-
+        this.professorRepository.delete(matricula);
     }
 
     @Override
     public List<Professor> getProfessores(Integer size, Integer page, String orderBy) {
-        return List.of();
+        return professorRepository.findAll(page, size, orderBy);
     }
 
     @Override
     public Professor getProfessorByMatricula(String matricula) {
-        return null;
+        return professorRepository.findByMatricula(matricula);
     }
 
     @Override
-    public Professor update(Professor professor) {
-        return null;
+    public Professor update(Professor professor, String matricula) {
+        return professorRepository.update(professor, matricula);
     }
 }
