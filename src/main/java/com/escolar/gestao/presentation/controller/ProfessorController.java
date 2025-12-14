@@ -1,5 +1,9 @@
 package com.escolar.gestao.presentation.controller;
 
+import com.escolar.gestao.application.usecases.useCasesProfessor.UseCaseCreateProfessor;
+import com.escolar.gestao.application.usecases.useCasesProfessor.UseCaseDeleteProfessor;
+import com.escolar.gestao.application.usecases.useCasesProfessor.UseCaseGetProfessor;
+import com.escolar.gestao.application.usecases.useCasesProfessor.UseCaseUpdateProfessor;
 import com.escolar.gestao.presentation.controller.request.Professor.ProfessorRequest;
 import com.escolar.gestao.presentation.controller.response.Professor.ProfessorResponse;
 import com.escolar.gestao.infrastructure.persistence.jpaRepository.ProfessorRepositoryJpa;
@@ -20,10 +24,21 @@ import static com.escolar.gestao.constants.URLconstants.URL_PROFESSOR;
 @RequestMapping(URL_PROFESSOR)
 public class ProfessorController {
 
-    private final ProfessorRepositoryJpa repository;
+    private final UseCaseCreateProfessor useCaseCreateProfessor;
+    private final UseCaseDeleteProfessor useCaseDeleteProfessor;
+    private final UseCaseGetProfessor  useCaseGetProfessor;
+    private final UseCaseUpdateProfessor useCaseUpdateProfessor;
 
-    public ProfessorController(ProfessorRepositoryJpa repository) {
-        this.repository = repository;
+    public ProfessorController(
+            UseCaseCreateProfessor CreateProfessor,
+            UseCaseDeleteProfessor DeleteProfessor,
+            UseCaseGetProfessor  GetProfessor,
+            UseCaseUpdateProfessor UpdateProfessor
+    ) {
+        this.useCaseCreateProfessor = CreateProfessor;
+        this.useCaseDeleteProfessor = DeleteProfessor;
+        this.useCaseGetProfessor = GetProfessor;
+        this.useCaseUpdateProfessor = UpdateProfessor;
     }
 
     @PostMapping
