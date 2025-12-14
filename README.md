@@ -1,6 +1,6 @@
 # PROJETO SISTEMA DE GESTÃO ESCOLAR
 
-Um sistema de gerenciamento escolar desenvolvido como projeto da disciplina Arquitetura de Software, **BASEADO** em Clean Architecture como um norte para separação de responsabilidades e manutenção facilitada.
+Um sistema de gerenciamento escolar desenvolvido como projeto da disciplinaEntity Arquitetura de Software, **BASEADO** em Clean Architecture como um norte para separação de responsabilidades e manutenção facilitada.
 
 ##  Documentações do Projeto
 

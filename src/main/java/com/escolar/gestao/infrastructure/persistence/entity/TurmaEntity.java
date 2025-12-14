@@ -10,8 +10,8 @@ import jakarta.persistence.ManyToOne;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Entity
-public class Turma {
+@Entity(name = "turma")
+public class TurmaEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -20,7 +20,7 @@ public class Turma {
     public String codigo;
 
     @ManyToOne
-    public Disciplina disciplina;
+    public DisciplinaEntity disciplinaEntity;
 
     @ManyToOne
     public ProfessorEntity professor;
@@ -35,19 +35,19 @@ public class Turma {
     @Column(name = "data_criacao")
     public LocalDateTime dataCriacao = LocalDateTime.now();
 
-    public Turma() {
+    public TurmaEntity() {
     }
 
-    public Turma(
+    public TurmaEntity(
             String codigo,
-            Disciplina disciplina,
+            DisciplinaEntity disciplinaEntity,
             ProfessorEntity professor,
             String semestre,
             Integer vagas,
             List<AlunoEntity> alunos
     ) {
         this.codigo = codigo;
-        this.disciplina = disciplina;
+        this.disciplinaEntity = disciplinaEntity;
         this.professor = professor;
         this.semestre = semestre;
         this.capacidadeMaxima = vagas;
