@@ -49,3 +49,9 @@ Infra (SpringDataUserRepository JPA)
     ↓
 Banco
 ```
+
+## Próximos passos
+
+- remover o auth e criar uma nova app OAuth2 *gestao_auth_api* || criar um API Gateway (BFF / Edge Auth) 
+- criar uma app chamada *gestao_payment* que sera responsavel para gerenciar os pagamentos recorrente dos alunos.
+- usar o meio de pagamento recorrente DO PAGBANK 
