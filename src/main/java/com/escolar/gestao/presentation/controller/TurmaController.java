@@ -1,9 +1,11 @@
 package com.escolar.gestao.presentation.controller;
 
+import com.escolar.gestao.application.mapper.TurmaMapper;
 import com.escolar.gestao.application.usecases.useCasesTurma.UseCaseCreateTurma;
 import com.escolar.gestao.application.usecases.useCasesTurma.UseCaseDeleteTurma;
 import com.escolar.gestao.application.usecases.useCasesTurma.UseCaseGetTurma;
 import com.escolar.gestao.application.usecases.useCasesTurma.UseCaseUpdateTurma;
+import com.escolar.gestao.domain.Turma;
 import com.escolar.gestao.presentation.controller.request.Turma.TurmaPutRequest;
 import com.escolar.gestao.presentation.controller.request.Turma.TurmaRequest;
 import com.escolar.gestao.presentation.controller.response.Turma.TurmaResponse;
@@ -48,8 +50,15 @@ public class TurmaController {
             @Valid
             TurmaRequest request
     ) {
-        // ToDo implementar
-        return null;
+        Turma create = useCaseCreateTurma.createTurma(
+                request.codigo(),
+                request.disciplinaCodigo(),
+                request.professorMatricula(),
+                request.semestre(),
+                request.capacidadeMaxima(),
+                request.alunosMatriculas()
+        );
+        return ResponseEntity.ok(TurmaMapper.toResponse(create));
     }
 
     @GetMapping
@@ -61,8 +70,7 @@ public class TurmaController {
             @RequestParam("sort")
             String sortBy
     ) {
-        // ToDo implementar
-        return null;
+        return ResponseEntity.ok(useCaseGetTurma.getTurmas(page, size, sortBy).stream().map(TurmaMapper::toResponse).toList());
     }
 
     @GetMapping("/{codigo}")
@@ -70,12 +78,11 @@ public class TurmaController {
             @PathVariable
             String codigo
     ) {
-        // ToDo implementar
-        return null;
+        return ResponseEntity.ok(TurmaMapper.toResponse(useCaseGetTurma.getTurma(codigo)));
     }
 
     @PutMapping("/{codigo}")
-    public ResponseEntity<TurmaResponse> update(
+    public ResponseEntity update(
             @PathVariable
             String codigo,
 
@@ -83,8 +90,8 @@ public class TurmaController {
             @Valid
             TurmaPutRequest request
     ) {
-        // ToDo implementar
-        return null;
+        useCaseUpdateTurma.updateTurma(codigo, request.disciplinaCodigo(), request.professorMatricula(), request.semestre(), request.capacidadeMaxima());
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{codigo}")
@@ -92,23 +99,31 @@ public class TurmaController {
             @PathVariable
             String codigo
     ) {
-        // ToDo implementar
+        useCaseDeleteTurma.delete(codigo);
         return null;
     }
 
     @PutMapping("/{codigo}/alunos/{matricula}")
     public ResponseEntity addAluno(
+        @PathVariable
+        String codigo,
 
+        @PathVariable
+        String matricula
     ){
-        // ToDo implementar
+        useCaseUpdateTurma.addAluno(codigo, matricula);
         return null;
     }
 
     @DeleteMapping("/{codigo}/alunos/{matricula}")
     public ResponseEntity removeAluno(
+            @PathVariable
+            String codigo,
 
+            @PathVariable
+            String matricula
     ){
-        // ToDo implementar
+        useCaseUpdateTurma.removeAluno(codigo, matricula);
         return null;
     }
 }

@@ -7,6 +7,10 @@ import com.escolar.gestao.infrastructure.exception.ProfessorNotFoundException;
 import com.escolar.gestao.infrastructure.persistence.entity.ProfessorEntity;
 import com.escolar.gestao.infrastructure.persistence.jpaRepository.ProfessorRepositoryJpa;
 import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -47,12 +51,18 @@ public class ProfessorRepositoryImpl implements ProfessorRepository {
 
     @Override
     public void delete(String matricula) {
-        jpaProfessor.deleteByMatricula(matricula);
+        try{
+            jpaProfessor.deleteByMatricula(matricula);
+        }catch (Exception e){
+            throw new ProfessorNotFoundException("PROFESSOR COM MATRICULA "+matricula+" NÃO FOI ENCONTRADO");
+        }
+
     }
 
     @Override
     public List<Professor> findAll(Integer page, Integer size, String sortBy) {
-
-        return List.of();
+        Pageable pageable =  PageRequest.of(page, size, Sort.by(sortBy));
+        Page<ProfessorEntity> result = jpaProfessor.findAll(pageable);
+        return result.stream().map(ProfessorMapper::toDomain).toList();
     }
 }

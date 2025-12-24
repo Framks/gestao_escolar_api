@@ -81,7 +81,11 @@ public class UseCasesTurmaImpl implements UseCaseGetTurma, UseCaseCreateTurma, U
     }
 
     @Override
-    public void updateTurma(Turma turma) {
+    public void updateTurma(String codigo,
+                            String codigoDisciplina,
+                            String matriculaProfessor,
+                            String semestre,
+                            Integer capacidadeMaxima) {
 
     }
 
