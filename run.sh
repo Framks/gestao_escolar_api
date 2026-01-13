@@ -1,4 +1,4 @@
-export VERSION=$(git rev-parse --short HEAD)
+export VERSION=1.0.0
 
 docker compose build
 docker compose up -d

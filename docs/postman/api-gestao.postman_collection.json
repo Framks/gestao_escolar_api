@@ -1,0 +1,427 @@
+{
+	"info": {
+		"_postman_id": "2447bb03-9d35-46d6-9056-78ad97957781",
+		"name": "api-gestao",
+		"description": "Aqui esta documentado todos os endpoint da aplicação:  \n[https://github.com/Framks/gestao_escolar_api](https://github.com/Framks/gestao_escolar_api)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "30068110",
+		"_collection_link": "https://api-gestao.postman.co/workspace/Api-Gestao-Workspace~f2a39db5-76ec-40f9-a8ff-296de2dd46b7/collection/30068110-2447bb03-9d35-46d6-9056-78ad97957781?action=share&source=collection_link&creator=30068110"
+	},
+	"item": [
+		{
+			"name": "professor",
+			"item": [
+				{
+					"name": "list_professor",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/professores?size=10&page=0&shortBy=name",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"professores"
+							],
+							"query": [
+								{
+									"key": "size",
+									"value": "10"
+								},
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "shortBy",
+									"value": "name"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create_professor",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host}}/api/v1/professores"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "aluno",
+			"item": [
+				{
+					"name": "criar aluno",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"{{$randomFullName}}\",\n    \"email\": \"{{$randomEmail}}\",\n    \"senha\": \"chingling\",\n    \"cpf\": \"06367254307\",\n    \"data_nascimento\": \"2020-12-04T13:30:00\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host}}/api/v1/alunos"
+					},
+					"response": []
+				},
+				{
+					"name": "buscar lista de alunos",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/api/v1/alunos?size=10&page=0&sort=nome",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"alunos"
+							],
+							"query": [
+								{
+									"key": "size",
+									"value": "10"
+								},
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "sort",
+									"value": "nome"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "buscar aluno",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host}}/api/v1/alunos/{{matricula}}"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "admin",
+			"item": [
+				{
+					"name": "Post_admins",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"{{$randomFullName}}\",\n    \"email\": \"{{$randomEmail}}\",\n    \"senha\": \"chingling\",\n    \"cpf\": \"06367254307\",\n    \"data_nascimento\": \"2020-12-04T13:30:00\",\n    \"cargo\": \"Coordenador\",\n    \"permissoes\": [\n        \"gerenciar_alunos\",\n        \"ver_notas\",\n        \"gerenciar_professores\",\n        \"gerenicar_admins\"\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host}}/api/v1/admins"
+					},
+					"response": []
+				},
+				{
+					"name": "get_list_admins",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/api/v1/admins?size=10&page=0&orderBy=name",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"admins"
+							],
+							"query": [
+								{
+									"key": "size",
+									"value": "10"
+								},
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "orderBy",
+									"value": "name"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get_admin",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": "{{host}}/api/v1/admins/{{email}}"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "turma",
+			"item": [
+				{
+					"name": "get turmas",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{host}}/api/v1/turmas?size=10&page=0&sort=semestre",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"turmas"
+							],
+							"query": [
+								{
+									"key": "size",
+									"value": "10"
+								},
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "sort",
+									"value": "semestre"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "criar turmas",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"codigo\": \"QXD_0099\",\n    \"codigo_disciplina\": \"DIS_UUID\",\n    \"matricula_professor\": \"PRO_UUID\",\n    \"semestre\": \"2026.1\",\n    \"capacidade_maxima\": 50,\n    \"matriculas_alunos\":[\n        \"ALU_UUID\"\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host}}/api/v1/turmas"
+					},
+					"response": []
+				},
+				{
+					"name": "Add Aluno",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": "{{host}}/api/v1/turmas/{{turma_codigo}}/alunos/{{matricula_Aluno}}"
+					},
+					"response": []
+				},
+				{
+					"name": "remove Aluno",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": "{{host}}/api/v1/turmas/{{turma_codigo}}/alunos/{{matricula_Aluno}}"
+					},
+					"response": []
+				},
+				{
+					"name": "turma get",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"url": "{{host}}/api/v1/turmas/{{turma_codigo}}"
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar turma",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"codigo\": \"QXD_0099\",\n    \"codigo_disciplina\": \"DIS_UUID\",\n    \"matricula_professor\": \"PRO_UUID\",\n    \"semestre\": \"2026.1\",\n    \"capacidade_maxima\": 50\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host}}/api/v1/turmas/{{email}}"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "disciplina",
+			"item": []
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"Bette.Lehner77@yahoo.com\",\n    \"senha\": \"chingling\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{host}}/api/v1/auth/login"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "Matricula",
+			"value": "ALU_E34BA3E9-294C-4CB5-AD61-91B4A9946FBF"
+		}
+	]
+}

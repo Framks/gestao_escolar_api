@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="usuario_nome")
-public abstract class Usuario {
+public abstract class UsuarioEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,9 +41,9 @@ public abstract class Usuario {
     @Column(name = "data_criacao")
     public LocalDateTime dataCriacao = LocalDateTime.now();
 
-    public Usuario() {}
+    public UsuarioEntity() {}
 
-    public Usuario(
+    public UsuarioEntity(
             String nome,
             String email,
             String senha,

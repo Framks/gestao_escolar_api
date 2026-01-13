@@ -3,10 +3,9 @@ package com.escolar.gestao.infrastructure.persistence.entity;
 import com.escolar.gestao.enums.UserRole;
 import jakarta.persistence.Entity;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Entity
-public class AlunoEntity extends Usuario {
+public class AlunoEntity extends UsuarioEntity {
 
     public String matricula;
 

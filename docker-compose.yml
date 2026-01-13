@@ -87,6 +87,13 @@ services:
     networks:
       - observability
 
+  # data-base:
+  #   image:
+  #   container_name:
+  #   environment:
+  #   ports:
+  #   networks:
+
 networks:
   observability:
     driver: bridge

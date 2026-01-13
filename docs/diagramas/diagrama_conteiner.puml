@@ -1,0 +1,68 @@
+@startuml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+title Sistema de Gestão Escolar - Container Diagram + Observabilidade + Módulo Financeiro
+
+Person(admin, "Administrador")
+Person(prof, "Professor")
+Person(aluno, "Aluno")
+Person(resp_fin, "Responsável Financeiro")
+
+System_Boundary(sis, "Gestão Escolar") {
+
+    Container(frontend, "Frontend",         "React / Flutter",         "Interface usada por alunos, professores, admins e responsáveis financeiros")
+
+    Container(api, "API Backend",         "Spring Boot + OpenTelemetry SDK",         "Expõe APIs REST para cadastro, turmas, notas e financeiro.\nEnvia telemetria via OTLP")
+
+    Container(finance, "FinanceService",         "Spring Boot Module / Microservice Interno",         "Gerencia cobranças, mensalidades, faturas e integrações de pagamento")
+
+    ContainerDb(db, "Banco de Dados",         "PostgreSQL",         "Armazena usuários, notas, turmas, frequência, tarefas e dados financeiros")
+}
+
+System_Boundary(payments, "Plataforma de Pagamentos") {
+    System_Ext(pg_provider, "Gateway de Pagamento",         "PagBank",         "Processa cobranças, boletos, cartões e webhooks de confirmação")
+}
+
+System_Boundary(obs, "Plataforma de Observabilidade") {
+
+    Container(collector, "OpenTelemetry Collector",         "OTel Collector",         "Recebe telemetria (traces, logs, metrics) e envia para Mimir, Tempo e Loki")
+
+    Container(mimir, "Mimir", "Grafana Mimir",         "Armazena e processa métricas")
+
+    Container(tempo, "Tempo", "Grafana Tempo",         "Armazena traces distribuídos")
+
+    Container(loki, "Loki", "Grafana Loki",         "Armazena logs de forma escalável")
+
+    Container(grafana, "Grafana", "Grafana",         "Interface para dashboards de métricas, logs e traces")
+}
+
+' ---- Relações dos usuários ----
+Rel(admin, frontend, "Acessa", "HTTPS")
+Rel(prof, frontend, "Acessa", "HTTPS")
+Rel(aluno, frontend, "Acessa", "HTTPS")
+Rel(resp_fin, frontend, "Gerencia pagamentos / consulta cobranças", "HTTPS")
+
+' ---- Relações internas ----
+Rel(frontend, api, "Consome APIs gerais", "HTTPS / JSON")
+Rel(frontend, finance, "Consome APIs financeiras", "HTTPS / JSON")
+
+Rel(api, db, "Lê / grava dados", "SQL / JPA")
+Rel(finance, db, "Lê / grava dados financeiros", "SQL / JPA")
+
+' ---- Financeiro e Pagamentos ----
+Rel(finance, pg_provider, "Cria cobranças, boletos, pagamentos", "HTTPS / API")
+Rel(pg_provider, finance, "Retorna webhooks de confirmação", "HTTPS / Webhook")
+
+' ---- Observabilidade ----
+Rel(api, collector, "Envia métricas, logs e traces via OTLP", "OTLP / gRPC")
+Rel(finance, collector, "Envia métricas, logs e traces", "OTLP / gRPC")
+
+Rel(collector, mimir, "Envia métricas", "Remote Write")
+Rel(collector, tempo, "Envia traces", "OTLP")
+Rel(collector, loki, "Envia logs", "Loki API")
+
+Rel(grafana, mimir, "Consulta métricas", "PromQL")
+Rel(grafana, tempo, "Consulta traces", "Tempo API")
+Rel(grafana, loki, "Consulta logs", "LogQL")
+
+@enduml

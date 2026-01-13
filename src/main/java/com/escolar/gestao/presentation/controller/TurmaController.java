@@ -1,11 +1,14 @@
 package com.escolar.gestao.presentation.controller;
 
+import com.escolar.gestao.application.mapper.TurmaMapper;
+import com.escolar.gestao.application.usecases.useCasesTurma.UseCaseCreateTurma;
+import com.escolar.gestao.application.usecases.useCasesTurma.UseCaseDeleteTurma;
+import com.escolar.gestao.application.usecases.useCasesTurma.UseCaseGetTurma;
+import com.escolar.gestao.application.usecases.useCasesTurma.UseCaseUpdateTurma;
+import com.escolar.gestao.domain.Turma;
+import com.escolar.gestao.presentation.controller.request.Turma.TurmaPutRequest;
 import com.escolar.gestao.presentation.controller.request.Turma.TurmaRequest;
 import com.escolar.gestao.presentation.controller.response.Turma.TurmaResponse;
-import com.escolar.gestao.infrastructure.persistence.jpaRepository.AlunoRepositoryJpa;
-import com.escolar.gestao.infrastructure.persistence.jpaRepository.DisciplinaRepositoryJpa;
-import com.escolar.gestao.infrastructure.persistence.jpaRepository.ProfessorRepositoryJpa;
-import com.escolar.gestao.infrastructure.persistence.jpaRepository.TurmaRepositoryJpa;
 import jakarta.validation.Valid;
 import java.util.List;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import static com.escolar.gestao.constants.URLconstants.URL_TURMA;
 
@@ -23,48 +27,103 @@ import static com.escolar.gestao.constants.URLconstants.URL_TURMA;
 @RequestMapping(URL_TURMA)
 public class TurmaController {
 
-    private final TurmaRepositoryJpa turmaRepo;
-    private final DisciplinaRepositoryJpa discRepo;
-    private final ProfessorRepositoryJpa profRepo;
-    private final AlunoRepositoryJpa alunoRepo;
+    private final UseCaseGetTurma useCaseGetTurma;
+    private final UseCaseCreateTurma useCaseCreateTurma;
+    private final UseCaseDeleteTurma useCaseDeleteTurma;
+    private final UseCaseUpdateTurma useCaseUpdateTurma;
 
     public TurmaController(
-            TurmaRepositoryJpa turmaRepo,
-            DisciplinaRepositoryJpa discRepo,
-            ProfessorRepositoryJpa profRepo,
-            AlunoRepositoryJpa alunoRepo
+            UseCaseGetTurma getTurma,
+            UseCaseDeleteTurma deleteTurma,
+            UseCaseCreateTurma createTurma,
+            UseCaseUpdateTurma updateTurma
     ) {
-        this.turmaRepo = turmaRepo;
-        this.discRepo = discRepo;
-        this.profRepo = profRepo;
-        this.alunoRepo = alunoRepo;
+        this.useCaseGetTurma = getTurma;
+        this.useCaseCreateTurma = createTurma;
+        this.useCaseDeleteTurma = deleteTurma;
+        this.useCaseUpdateTurma = updateTurma;
     }
 
     @PostMapping
-    public ResponseEntity<TurmaResponse> create(@RequestBody @Valid TurmaRequest dto) {
-        return null;
+    public ResponseEntity<TurmaResponse> create(
+            @RequestBody
+            @Valid
+            TurmaRequest request
+    ) {
+        Turma create = useCaseCreateTurma.createTurma(
+                request.codigo(),
+                request.disciplinaCodigo(),
+                request.professorMatricula(),
+                request.semestre(),
+                request.capacidadeMaxima(),
+                request.alunosMatriculas()
+        );
+        return ResponseEntity.ok(TurmaMapper.toResponse(create));
     }
 
     @GetMapping
-    public ResponseEntity<List<TurmaResponse>> findAll() {
-        return null;
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<TurmaResponse> findById(@PathVariable Long id) {
-        return null;
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<TurmaResponse> update(
-            @PathVariable Long id,
-            @RequestBody @Valid TurmaRequest dto
+    public ResponseEntity<List<TurmaResponse>> findAll(
+            @RequestParam(defaultValue = "0")
+            Integer page,
+            @RequestParam(defaultValue = "10")
+            Integer size,
+            @RequestParam("sort")
+            String sortBy
     ) {
+        return ResponseEntity.ok(useCaseGetTurma.getTurmas(page, size, sortBy).stream().map(TurmaMapper::toResponse).toList());
+    }
+
+    @GetMapping("/{codigo}")
+    public ResponseEntity<TurmaResponse> findByCodigo(
+            @PathVariable
+            String codigo
+    ) {
+        return ResponseEntity.ok(TurmaMapper.toResponse(useCaseGetTurma.getTurma(codigo)));
+    }
+
+    @PutMapping("/{codigo}")
+    public ResponseEntity update(
+            @PathVariable
+            String codigo,
+
+            @RequestBody
+            @Valid
+            TurmaPutRequest request
+    ) {
+        useCaseUpdateTurma.updateTurma(codigo, request.disciplinaCodigo(), request.professorMatricula(), request.semestre(), request.capacidadeMaxima());
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/{codigo}")
+    public ResponseEntity delete(
+            @PathVariable
+            String codigo
+    ) {
+        useCaseDeleteTurma.delete(codigo);
         return null;
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity delete(@PathVariable Long id) {
+    @PutMapping("/{codigo}/alunos/{matricula}")
+    public ResponseEntity addAluno(
+        @PathVariable
+        String codigo,
+
+        @PathVariable
+        String matricula
+    ){
+        useCaseUpdateTurma.addAluno(codigo, matricula);
+        return null;
+    }
+
+    @DeleteMapping("/{codigo}/alunos/{matricula}")
+    public ResponseEntity removeAluno(
+            @PathVariable
+            String codigo,
+
+            @PathVariable
+            String matricula
+    ){
+        useCaseUpdateTurma.removeAluno(codigo, matricula);
         return null;
     }
 }

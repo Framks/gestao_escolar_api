@@ -7,24 +7,40 @@ public class Disciplina {
 
         public String nome;
 
-        public String codigo = "DIS_" + UUID.randomUUID().toString().toUpperCase();
+        public String codigo;
 
         public String descricao;
 
-        public int cargaHoraria;
+        public Integer cargaHoraria;
 
-        public LocalDateTime dataCriacao = LocalDateTime.now();
+        public LocalDateTime dataCriacao;
 
         public Disciplina() {
         }
 
         public Disciplina(
                 String nome,
-                int cargaHoraria,
+                Integer cargaHoraria,
                 String descricao
         ) {
                 this.nome = nome;
                 this.cargaHoraria = cargaHoraria;
                 this.descricao = descricao;
+                this.dataCriacao = LocalDateTime.now();
+                this.codigo = "DIS_" + UUID.randomUUID().toString().toUpperCase();
+        }
+
+        public Disciplina(
+                String nome,
+                Integer cargaHoraria,
+                String descricao,
+                String codigo,
+                LocalDateTime dataCriacao
+        ) {
+            this.nome = nome;
+            this.cargaHoraria = cargaHoraria;
+            this.descricao = descricao;
+            this.codigo = codigo;
+            this.dataCriacao = dataCriacao;
         }
 }

@@ -37,7 +37,7 @@
 
 - **Complexidade inicial**: mais camadas significa mais classes, o que pode ser “overkill” para projetos muito simples.
 - **Performance**: abstrações têm custo (mas geralmente pequeno para casos CRUD típicos).
-- **Sobrecarga operacional**: manter a documentação atualizada conforme o código evolui exige disciplina.
+- **Sobrecarga operacional**: manter a documentação atualizada conforme o código evolui exige disciplinaEntity.
 
 ## 5. Documentação C4
 

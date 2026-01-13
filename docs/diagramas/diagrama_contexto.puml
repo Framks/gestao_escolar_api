@@ -1,0 +1,31 @@
+@startuml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+title Gestão Escolar – Diagrama de Contexto
+
+Person(admin, "Administrador",  "Gerencia cadastros, turmas e configurações do sistema.")
+Person(prof, "Professor",  "Lança notas, frequência e tarefas.")
+Person(aluno, "Aluno",  "Consulta notas, tarefas, turmas e envia atividades.")
+
+Person(resp_fin, "Responsável Financeiro", "Acompanha cobranças, boletos, pagamentos e mensalidades. (Opcional)")
+
+System_Boundary(sis, "sistema de gerenciamento"){
+    System(frontend, "Frontend", "Interface web/mobile utilizada pelos usuários.")
+    System(sistema, "Gestão Escolar",   "Sistema de gerenciamento escolar que administra alunos, professores,\n turmas, notas, tarefas, frequência e também realiza cobranças/mensalidades.")
+}
+
+System_Ext(pagamentos, "Plataforma de Pagamentos",  "Serviço terceiro que processa transações, boletos e cobranças.\n PagBank.")
+
+' --- Relações dos usuários com o frontend ---
+Rel(admin, frontend, "Acessa")
+Rel(prof, frontend, "Acessa")
+Rel(aluno, frontend, "Acessa")
+Rel(resp_fin, frontend, "Acessa módulo financeiro", "HTTPS")
+
+' --- Relações do frontend com o sistema ---
+Rel(frontend, sistema, "Interage com")
+
+' --- Serviços externos usados pelo sistema ---
+Rel(sistema, pagamentos, "Cria cobranças / processa pagamentos", "HTTPS / API")
+
+@enduml

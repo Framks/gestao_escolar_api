@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ProfessorRepositoryJpa extends JpaRepository<ProfessorEntity, Integer> {
-
-    public Optional<ProfessorEntity> findByMatricula(String matricula);
+    Optional<ProfessorEntity> findByMatricula(String matricula);
+    void deleteByMatricula(String matricula);
 }

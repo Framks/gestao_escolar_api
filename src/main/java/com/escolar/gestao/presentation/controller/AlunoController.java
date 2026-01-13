@@ -2,9 +2,12 @@ package com.escolar.gestao.presentation.controller;
 
 import com.escolar.gestao.application.mapper.AlunoMapper;
 import com.escolar.gestao.application.usecases.useCasesAluno.UseCaseCreateAluno;
+import com.escolar.gestao.application.usecases.useCasesAluno.UseCaseDeleteAluno;
 import com.escolar.gestao.application.usecases.useCasesAluno.UseCaseGetAluno;
 import com.escolar.gestao.application.usecases.useCasesAluno.UseCaseUpdateAluno;
+import com.escolar.gestao.domain.Aluno;
 import com.escolar.gestao.presentation.controller.request.Aluno.AlunoRequest;
+import com.escolar.gestao.presentation.controller.response.Aluno.AlunoPageableResponse;
 import com.escolar.gestao.presentation.controller.response.Aluno.AlunoResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -18,17 +21,20 @@ import static com.escolar.gestao.constants.URLconstants.URL_ALUNO;
 public class AlunoController {
 
     private final UseCaseCreateAluno createAluno;
-    private final UseCaseGetAluno getAluno;
-    private final UseCaseUpdateAluno updateAluno;
+    private final UseCaseDeleteAluno deleteAluno;
+    private final UseCaseGetAluno useCaseGetAluno;
+    private final UseCaseUpdateAluno useCaseUpdateAluno;
 
     public AlunoController(
             UseCaseCreateAluno createAluno,
-            UseCaseGetAluno getAluno,
-            UseCaseUpdateAluno updateAluno
+            UseCaseDeleteAluno deleteAluno,
+            UseCaseGetAluno useCaseGetAluno,
+            UseCaseUpdateAluno useCaseUpdateAluno
     ) {
         this.createAluno = createAluno;
-        this.getAluno = getAluno;
-        this.updateAluno = updateAluno;
+        this.deleteAluno = deleteAluno;
+        this.useCaseGetAluno = useCaseGetAluno;
+        this.useCaseUpdateAluno = useCaseUpdateAluno;
     }
 
     @PostMapping
@@ -42,9 +48,15 @@ public class AlunoController {
     }
 
     @GetMapping
-    public ResponseEntity<List<AlunoResponse>> findAll() {
-        // ToDo Implementar
-        return null;
+    public ResponseEntity<AlunoPageableResponse> findAll(
+        @RequestParam(defaultValue = "0") Integer page,
+        @RequestParam(defaultValue = "10") Integer size,
+        @RequestParam(defaultValue = "id") String sort
+    ){
+        List<Aluno> alunos = useCaseGetAluno.getAlunos(page, size, sort);
+        List<AlunoResponse> alunosrespose = alunos.stream().map(AlunoResponse::new).toList();
+        AlunoPageableResponse response = new AlunoPageableResponse(alunosrespose, page, size, sort);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{matricula}")
@@ -52,7 +64,7 @@ public class AlunoController {
             @PathVariable
             String matricula
     ) {
-        AlunoResponse response = AlunoMapper.toResponse(getAluno.getAluno(matricula));
+        AlunoResponse response = AlunoMapper.toResponse(useCaseGetAluno.getAluno(matricula));
         return ResponseEntity.ok(response);
     }
 
@@ -65,13 +77,15 @@ public class AlunoController {
             @Valid
             AlunoRequest request
     ) {
-        // ToDo Implementar
-        return null;
+        Aluno result = useCaseUpdateAluno.updateUser(AlunoMapper.toDomain(request), matricula);
+        return ResponseEntity.ok(AlunoMapper.toResponse(result));
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity delete(@PathVariable Integer id) {
-        // ToDo Implementar
-        return null;
+    @DeleteMapping("/{matricula}")
+    public ResponseEntity delete(
+            @PathVariable String matricula
+    ) {
+        deleteAluno.delete(matricula);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -1,0 +1,30 @@
+@startuml
+
+package "application.usecase" {
+  class CriarAlunoUseCase {
+    - AlunoRepository alunoRepository
+    + executar(nome: String, cpf: String): Aluno
+  }
+}
+
+package "domain.model" {
+  class Aluno {
+    - String nome
+    - String cpf
+    + Aluno(nome: String, cpf: String)
+    + getNome(): String
+    + getCpf(): String
+  }
+}
+
+package "domain.repository" {
+  interface AlunoRepository {
+    + salvar(aluno: Aluno): Aluno
+    + buscarPorCpf(cpf: String): Aluno?
+  }
+}
+
+CriarAlunoUseCase --> AlunoRepository
+CriarAlunoUseCase --> Aluno
+
+@enduml

@@ -14,17 +14,17 @@ public record AdminResponse(
         Boolean ativo,
         LocalDateTime dataCriacao
 ) {
-
-    public AdminResponse(Admin admin) {
+    public AdminResponse(Admin a) {
         this(
-                admin.nome,
-                admin.email,
-                admin.cpf,
-                admin.dataNascimento,
-                admin.cargo,
-                admin.permissoes,
-                admin.ativo,
-                admin.dataCriacao
+                a.nome,
+                a.email,
+                a.cpf,
+                a.dataNascimento,
+                a.cargo,
+                a.permissoes,
+                a.ativo,
+                a.dataCriacao
         );
     }
 }
+

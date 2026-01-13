@@ -5,8 +5,8 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Entity
-public class Disciplina {
+@Entity(name = "disciplina")
+public class DisciplinaEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,10 +25,10 @@ public class Disciplina {
     @Column(name = "data_criacao")
     public LocalDateTime dataCriacao = LocalDateTime.now();
 
-    public Disciplina() {
+    public DisciplinaEntity() {
     }
 
-    public Disciplina(
+    public DisciplinaEntity(
             String nome,
             int cargaHoraria,
             String descricao

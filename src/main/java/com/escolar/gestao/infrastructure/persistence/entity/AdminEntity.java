@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-public class AdminEntity extends Usuario {
+public class AdminEntity extends UsuarioEntity {
     public String cargo;
     public List<String> permissoes;
 
