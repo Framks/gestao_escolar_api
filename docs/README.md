@@ -24,7 +24,7 @@
 1. **Criação de Aluno**
    - O front faz requisição para `AlunoController` → `CriarAlunoUseCase` → valida domínio → usa `AlunoRepository` → persistência via `AlunoRepositoryJpa` → retorna para controller → resposta para o front.
 
-2. **Autenticação (se existir)**
+2. **Autenticação**
    - Front envia credenciais → Controller de autenticação → UseCase de login → repositório de usuário → geração de token / sessão → retorno para front.
 
 ## 3. Benefícios dessa arquitetura
