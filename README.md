@@ -21,11 +21,11 @@ Um sistema de gerenciamento escolar desenvolvido como projeto da disciplinaEntit
 
 ### **15/12 e 16/12**
 
- - [ ] Modelo C4 → Diagramas de Componentes e Código
+ - [X] Modelo C4 → Diagramas de Componentes e Código
 
 ### **05/01 e 06/01**
 
- - [ ] Código rodando e conformidade do que foi desenvolvido com os diagramas criados (parcial).
+ - [X] Código rodando e conformidade do que foi desenvolvido com os diagramas criados (parcial).
 
 
 ## Como "Rodar":
